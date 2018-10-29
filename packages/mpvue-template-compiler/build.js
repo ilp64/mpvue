@@ -1099,7 +1099,7 @@ var LIFECYCLE_HOOKS = [
   'beforeDestroy',
   'destroyed',
   'activated',
-  'deactivated', 'onLaunch',
+  'deactivated', 'onLaunch', 'onPageNotFound',
   'onLoad',
   'onShow',
   'onReady',

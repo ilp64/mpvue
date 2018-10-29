@@ -312,7 +312,7 @@ var LIFECYCLE_HOOKS = [
   'beforeDestroy',
   'destroyed',
   'activated',
-  'deactivated', 'onLaunch',
+  'deactivated', 'onLaunch', 'onPageNotFound',
   'onLoad',
   'onShow',
   'onReady',
@@ -4943,7 +4943,7 @@ function patch () {
 
 function callHook$1 (vm, hook, params) {
   var handlers = vm.$options[hook];
-  if (hook === 'onError' && handlers) {
+  if (['onError', 'onPageNotFound'].indexOf(hook) > -1 && handlers) {
     handlers = [handlers];
   }
 
@@ -5160,6 +5160,14 @@ function initMP (mpType, next) {
 
       onError: function onError (err) {
         callHook$1(rootVueVM, 'onError', err);
+      },
+
+      // Do something when app page not found.
+      onPageNotFound: function onPageNotFound (options) {
+        if ( options === void 0 ) options = {};
+        mp.status = '404';
+        this.globalData.appOptions = mp.appOptions = options;
+        callHook$1(rootVueVM, 'onPageNotFound', options);
       }
     });
   } else if (mpType === 'component') {
